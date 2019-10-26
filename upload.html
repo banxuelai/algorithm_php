@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<header>
+    <meta charset="utf-8">
+</header>
+<body>
+
+<div class="cover_img across">
+    <img id="return_url" src="" alt="" width="50" height="50"/>
+</div>
+<input type="hidden" name="img_url" id = "img_url" value="">
+<button type="button" class="layui-btn" id="uploadfile" >
+    <i class="layui-icon">&#xe67c;</i>上传图片
+</button>
+<!--<input type="file" accept="image/*" name="file" id="file" onclick="uploadImage()" />-->
+
+
+<!--<input name="cover" style='width: 402px;' type="text" id="uploaderfileshow" size="60" value="">-->
+<!--<a style="position:relative;" href="javascript:;">-->
+<!--    <input id="uploadfile" style="width:80px;height:27px;position:absolute;top:0;left:0;opacity:0;" type="file" name="upfile" class=""> </a>-->
+
+<script src = "https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript" src="ajaxupload.js"></script>
+<script type="text/javascript" src="jquery.ui.widget.js"></script>
+<script type="text/javascript" src="jquery.fileupload.js"></script>
+<script type="text/javascript">
+
+    var uploadurl = '/test/uploadImage.php';
+    var typename='book';
+    new AjaxUpload('#uploadfile', {
+        action: uploadurl,
+        name: 'upload',
+        data: {
+            type : typename
+        },
+        autoSubmit: true,
+        onComplete: function (file, jsondata) {
+            jsondata = $.parseJSON(jsondata);//eval("(" + jsondata + ")");
+            if(jsondata.code == 1){
+                if(jsondata.data.image_url)
+                {
+                    //$('#uploaderfileshow').val(jsondata.data.image_url);
+                    $('#img_url').val(jsondata.data.image_url);
+                    $("#return_url").attr('src',jsondata.data.image_url);
+                }
+            }
+            else if(jsondata.code == 0){
+                alert("图片须小于500k~");
+            }
+
+            else
+            {
+                alert("上传失败~");
+            }
+        }
+    });
+
+</script>
+</body>
+</html>
